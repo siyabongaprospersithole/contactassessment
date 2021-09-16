@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Contact;
 use App\Models\GenderType;
 use DB;
+use App\Mail\No_reply;
 use Mail;
 
 
@@ -59,6 +60,13 @@ class ContactController extends Controller
             'gender_id' => $request->gender,
             'content' => $request->content
             ]);
+            
+            //send email to user
+            //please create a mailtrap.io account and insert the laravel's integration details
+            //on to this application's .env file located on the root folder
+            //the application is using the sync driver so the page might take 3 seconds to return a 
+            //succesfull response to the user
+            Mail::to($create_contact->email)->send(new No_reply($create_contact->name));
 
             //if everything is succesfully, then store on the database
             DB::commit();
