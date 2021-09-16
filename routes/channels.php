@@ -12,7 +12,8 @@ use Illuminate\Support\Facades\Broadcast;
 | used to check if an authenticated user can listen to the channel.
 |
 */
-
+//to store contacts
+Route::post('/contact/store', [App\Http\Controllers\ContactController::class, 'store']);
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
