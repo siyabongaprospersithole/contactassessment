@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Contact;
 use App\Models\GenderType;
 use DB;
-use App\Mail\No_reply;
+use App\Mail\Noreply;
 use Mail;
 
 
@@ -24,15 +24,16 @@ class ContactController extends Controller
     public function contacts(){
         return Contact::SELECT(
                     'contacts.id'
-                    ,DB::raw("ROW_NUMBER() OVER (ORDER BY contacts.id) as rownum")
+                    ,DB::raw("ROW_NUMBER() OVER (ORDER BY contacts.gender_id) as rownum")
                     ,'contacts.name'
                     ,'contacts.email'
                     ,'contacts.content'
                     ,'gender_types.gender_name'
                     ,'contacts.created_at'
+                    ,'contacts.gender_id'
                 )
                 ->leftjoin('gender_types','gender_types.id', '=', 'contacts.gender_id')
-                ->orderby('contacts.created_at','DESC')
+                ->orderby('gender_id','DESC')
                 ->get(); 
     }
 
@@ -66,7 +67,7 @@ class ContactController extends Controller
             //on to this application's .env file located on the root folder
             //the application is using the sync driver so the page might take 3 seconds to return a 
             //succesfull response to the user
-            Mail::to($create_contact->email)->send(new No_reply($create_contact->name));
+            Mail::to($create_contact->email)->send(new Noreply($create_contact->name));
 
             //if everything is succesfully, then store on the database
             DB::commit();

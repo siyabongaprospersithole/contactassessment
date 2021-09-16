@@ -10,3 +10,12 @@ Installation:
 - php artisan route:list -- view all routes
 - Config Email
 - Serve the Application
+
+Seeders:
+- php artisan db:seed --class=GendersSeeder
+
+# NPM Packages
+
+- Select  => https://vue-select.org/guide/values.html#transforming-selections
+
+
